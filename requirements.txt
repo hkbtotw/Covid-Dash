@@ -44,7 +44,6 @@ jsonpath-rw==1.4.0
 libhxl==4.18
 linear-tsv==1.1.0
 MarkupSafe==1.1.1
-mkl-fft==1.0.15
 mkl-random==1.1.0
 mkl-service==2.3.0
 ndg-httpsclient==0.5.1
