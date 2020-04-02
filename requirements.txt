@@ -44,8 +44,6 @@ jsonpath-rw==1.4.0
 libhxl==4.18
 linear-tsv==1.1.0
 MarkupSafe==1.1.1
-mkl-random==1.1.0
-mkl-service==2.3.0
 ndg-httpsclient==0.5.1
 num2words==0.5.10
 numpy==1.18.1
