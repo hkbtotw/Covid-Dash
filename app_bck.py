@@ -3,13 +3,24 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objects as go
 from dash.dependencies import Input, Output
+import pandas as pd
 
 from DataEngine_v2 import loadData
+
+baseURL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/"
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 tickFont = {'size':12, 'color':"rgb(30,30,30)", 'family':"Courier New, monospace"}
 
+def loadData(fileName, columnName): 
+    data = pd.read_csv(baseURL + fileName) \
+             .drop(['Lat', 'Long'], axis=1) \
+             .melt(id_vars=['Province/State', 'Country/Region'], var_name='date', value_name=columnName) \
+             .astype({'date':'datetime64[ns]', columnName:'Int64'}, errors='ignore')
+    data['Province/State'].fillna('<all>', inplace=True)
+    data[columnName].fillna(0, inplace=True)
+    return data
 
 
 allData = loadData("time_series_covid19_confirmed_global.csv", "CumConfirmed") \
@@ -19,10 +30,10 @@ allData = loadData("time_series_covid19_confirmed_global.csv", "CumConfirmed") \
 countries = allData['Country/Region'].unique()
 countries.sort()
 
-print(allData)
-
-
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+
+server=app.server
 
 app.layout = html.Div(
     #style={ 'font-family':"Courier New, monospace" },
