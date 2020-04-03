@@ -71,7 +71,7 @@ app.layout = html.Div(
             dcc.Checklist(
                 id='metrics',
                 options=[{'label':m, 'value':m} for m in ['Confirmed', 'Deaths', 'Recovered']],
-                value=['Confirmed', 'Deaths']
+                value=['Confirmed']
             )
         ])
     ]),
