@@ -29,9 +29,11 @@ class PrepData(object):
         self.datasetName2="https://covid19.th-stat.com/api/open/cases/sum"
         self.datasetName3="https://covid19.th-stat.com/api/open/cases"
         self.outbreakStart='12/31/2019'
-        self.prvName='./data/prvDf.xlsx'
-        self.announcement1="./data/Announcement_covid19_290363n.xlsx"
-        self.gmaps = GoogleMaps('AIzaSyCYA0c5qppFhpcGeWK-e1QIT6EBS3LoMx4')  # my account API, replace with yours
+        self.prvName='./data/prvDf_1.csv'
+        self.prvName1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/prvDf_1.csv'
+        self.announcement="./data/Announcement_covid19_290363n_1.csv"
+        self.announcement1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/Announcement_covid19_290363n_1.csv'
+        #self.gmaps = GoogleMaps('AIzaSyCYA0c5qppFhpcGeWK-e1QIT6EBS3LoMx4')  # my account API, replace with yours
 
     def LoadData_Timeline(self):
         response = requests.get(self.datasetName1)
@@ -156,38 +158,48 @@ class PrepData(object):
 
         return dfData, prvDict
 
+    def LoadData_CaseDesc_Excel(self):
+        try:
+            filename=self.announcement
+            dfAnn=pd.read_csv(filename)
+            
+        except:
+            filename=self.announcement1
+            dfAnn=pd.read_csv(filename)
+            
+
+        return dfAnn
+
     def Load_prvDict(self):
         try:
             filename=self.prvName
-            print(' filename : ',filename, ' ==> ',type(filename))
-            dfPrv=pd.read_excel(filename)
+            dfPrv=pd.read_csv(filename)
+            
         
-            #dfPrv=pd.read_excel(filein)
             thList=dfPrv['PrvTh'].values.tolist()
             #print(thList)
             enList=dfPrv['PrvEn'].values.tolist()
             #print(enList)
+            latList=dfPrv['lat'].values.tolist()
+            lonList=dfPrv['lon'].values.tolist()
+
         except:
-            thList=['อ่างทอง', 'อำนาจเจริญ', 'กรุงเทพมหานคร', 'บึงกาฬ', 'บุรีรัมย์', 'ฉะเชิงเทรา', 'ชัยนาท', 'ชัยภูมิ', 'จันทบุรี', 'เชียงใหม่', 
-        'เชียงราย', 'ชลบุรี', 'ชุมพร', 'กาฬสินธุ์', 'กาญจนบุรี', 'ขอนแก่น', 'กระบี่', 'ลำพูน', 'เลย', 'ลพบุรี', 'แม่ฮ่องสอน', 'มหาสารคาม',
-         'มุกดาหาร', 'นครนายก', 'นครปฐม', 'นครพนม', 'นครราชสีมา', 'นครสวรรค์', 'นครศรีธรรมราช', 'น่าน', 'นราธิวาส', 'หนองบัวลำภู', 'หนองคาย',
-          'นนทบุรี', 'ประเทศไทย', 'ปทุมธานี', 'ปัตตานี', 'พังงา', 'พัทลุง', 'พะเยา', 'เพชรบูรณ์', 'เพชรบุรี', 'พิจิตร', 'พิษณุโลก', 'อยุธยา',
-           'แพร่', 'ภูเก็ต', 'ปราจีนบุรี', 'ประจวบคีรีขันธ์', 'ระนอง', 'ราชบุรี', 'ระยอง', 'ร้อยเอ็ด', 'สระแก้ว', 'สกลนคร', 'สมุทรปราการ', 'สมุทรสาคร',
-            'สมุทรสงคราม', 'สระบุรี', 'สตูล', 'สิงห์บุรี', 'ศรีสะเกษ', 'สงขลา', 'สุโขทัย', 'สุพรรณบุรี', 'สุราษฎร์ธานี', 'สุรินทร์', 'ตาก',
-             'ตราด', 'ตรัง', 'อุบลราชธานี', 'อุดรธานี', 'ไม่พบข้อมูล', 'อุทัยธานี', 'อุตรดิตถ์', 'ยะลา', 'ยโสธร']
-            enList=['Ang Thong', 'Amnat Charoen', 'Bangkok', 'Bueng Kan', 'Buriram', 'Chachoengsao', 'Chai Nat', 'Chaiyaphum', 'Chanthaburi', 'Chiang Mai', 'Chiang Rai', 'Chonburi', 'Chumphon', 'Kalasin', 'Kanchanaburi', 'Khon Kaen', 'Krabi', 'Lamphun', 'Loei', 'Lopburi',
-         'Mae Hong Son', 'Maha Sarakham', 'Mukdahan', 'Nakhon Nayok', 'Nakhon Pathom', 'Nakhon Phanom', 'Nakhon Ratchasima', 'Nakhon Sawan', 'Nakhon Si Thammarat', 'Nan', 'Narathiwat', 'Nong Bua Lamphu', 'Nong Khai', 'Nonthaburi', 'Northeast', 'Pathum Thani', 'Pattani',
-          'Phang Nga', 'Phatthalung', 'Phayao', 'Phetchabun', 'Phetchaburi', 'Phichit', 'Phitsanulok',
-          'Phra Nakhon Si Ayutthaya', 'Phrae', 'Phuket', 'Prachinburi', 'Prachuap Khiri Khan', 'Ranong', 'Ratchaburi', 
-         'Rayong', 'Roi Et', 'Sa Kaeo', 'Sakon Nakhon', 'Samut Prakan', 'Samut Sakhon', 'Samut Songkhram', 'Saraburi',
-         'Satun', 'Sing Buri', 'Sisaket', 'Songkhla', 'Sukhothai', 'Suphan Buri', 'Surat Thani', 'Surin', 'Tak', 'Trat',
-          'Trang', 'Ubon Ratchathani', 'Udon Thani', 'Unknown', 'Uthai Thani', 'Uttaradit', 'Yala', 'Yasothon']      
-        
-        print(len(thList), ' :: ',len(enList))
+            filename=self.prvName1
+            dfPrv=pd.read_csv(filename)
+            thList=dfPrv['PrvTh'].values.tolist()
+            #print(thList)
+            enList=dfPrv['PrvEn'].values.tolist()
+            #print(enList)
+            latList=dfPrv['lat'].values.tolist()
+            lonList=dfPrv['lon'].values.tolist()
+
+
+        #print(len(thList), ' :: ',len(enList))
 
         prvDict=dict(zip(enList,thList))
-
-        return prvDict
+        latDict=dict(zip(enList,latList))
+        lonDict=dict(zip(enList,lonList))
+        return prvDict, latDict, lonDict
 
     def LatLon_Announcement(self, dfIn):
         dfIn['lat'] = ""
@@ -198,7 +210,7 @@ class PrepData(object):
 
             #print(dfData['Attribute'][x], '  :::    ',geocode_result[0]['geometry'])
             #print(dfData['Attribute'][x],'  ===>    ',geocode_result[0]['geometry']['location'])
-            dfIn['lat'][x] = geocode_result[0]['geometry']['location'] ['lat']
+            dfIn['lat'][x] = geocode_result[0]['geometry']['location']['lat']
             dfIn['lon'][x] = geocode_result[0]['geometry']['location']['lng']
 
             #latList=dfIn['lat'].values.tolist()
@@ -273,37 +285,22 @@ class PrepData(object):
         print(' > ',newConfirmed,' :: ',newRecovered,' :: ',newDeaths)
         return pConfirmed, pRecovered, pDeaths, daysOutbreak,maxDate,Confirmed, Recovered, Deaths, newConfirmed, newCsym, newRecovered, newRsym, newDeaths, newDsym
 
-
 class MakePlot(object):
     def __init__(self):
         self.mapbox_access_token="pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
-        self.gmaps = GoogleMaps('AIzaSyCYA0c5qppFhpcGeWK-e1QIT6EBS3LoMx4')  # my account API, replace with yours
+        #self.gmaps = GoogleMaps('AIzaSyCYA0c5qppFhpcGeWK-e1QIT6EBS3LoMx4')  # my account API, replace with yours
 
-    def LatLon_Province(self, dfIn, prvDict):
+    def LatLon_Province(self, dfIn, prvDict, latDict, lonDict):
         dfData=dfIn[dfIn['Category']=='Province'].copy().reset_index()
 
         dfData['lat'] = ""
         dfData['lon'] = ""
 
         for x in range(len(dfData)):
-            dummy=prvDict[dfData['Attribute'][x]]
-            #print(dfData['Attribute'][x], ' ::  ',dummy)
-            #print('1 :  ',dfData['Province'][x])
-            if(dummy=='ไม่พบข้อมูล'):
-                dummy='Thailand'
-            #print(' 2   : ',dfData['Province'][x])
-            geocode_result = self.gmaps.geocode(dummy)
 
-            #print(dfData['Attribute'][x], '  :::    ',geocode_result[0]['geometry'])
-            #print(dfData['Attribute'][x],'  ===>    ',geocode_result[0]['geometry']['location'])
-            dfData['lat'][x] = geocode_result[0]['geometry']['location'] ['lat']
-            dfData['lon'][x] = geocode_result[0]['geometry']['location']['lng']
+            dfData['lat'][x] = latDict[dfData['Attribute'][x]]
+            dfData['lon'][x] = lonDict[dfData['Attribute'][x]]
 
-            #latList=dfIn['lat'].values.tolist()
-            #longList=dfIn['long'].values.tolist()
-            #pairList=list(zip(latList,longList))
-
-        #print(dfData)
         return dfData
 
     def ConvertDate(self,test):
