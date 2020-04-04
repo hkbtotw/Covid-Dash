@@ -23,6 +23,7 @@ dfLoad_2=prepData.LoadData_Casesum()
 prvDict, latDict, lonDict=prepData.Load_prvDict()
 #dfAnn=prepData.Load_Announcement()  # map-ann
 dfAnn=prepData.LoadData_CaseDesc_Excel()
+dfScr=prepData.LoadData_CovidScreeningBKK_Excel()
 dfLoad_3=makePlot.LatLon_Province(dfLoad_2, prvDict, latDict, lonDict)
 
 pConfirmed, pRecovered, pDeaths, daysOutbreak, maxDate, Confirmed, Recovered, Deaths, newConfirmed, newCsym, newRecovered, newRsym, newDeaths, newDsym=prepData.NumberPlateCalculation(dfLoad)
@@ -33,7 +34,7 @@ dfTrend=prepData.CalcTrendTable(dfLoad)
 fig_confirmed, fig_combine, fig_rate, fig_confirmedChange=makePlot.ProgressUpdatePlot(dfLoad)
 fig_curve_tab=makePlot.TrendPlot(dfTrend, daysOutbreak)
 fig_map=makePlot.MapPlot(dfLoad_3)
-fig_mapAnn=makePlot.MapPlot_Announcement(dfAnn)  # map-ann
+fig_mapAnn=makePlot.MapPlot_Announcement(dfAnn, dfScr)  # map-ann
 
 #########
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -253,7 +254,7 @@ app.layout = html.Div(
                               children=[
                                   html.H5(style={'textAlign': 'center', 'backgroundColor': '#ffffff',
                                                  'color': '#292929', 'padding': '1rem', 'marginBottom': '0', 'marginTop': '0'},
-                                               children='Locations by Incidents (Accouncement on Mar 29,2020'),
+                                               children='Locations by Incidents (based on Accouncement on Mar 29,2020) and Screening points in BKK'),
                                   dcc.Graph(
                                       id='map-ann',
                                       style={'height':'500'},

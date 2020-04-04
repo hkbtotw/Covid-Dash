@@ -33,6 +33,8 @@ class PrepData(object):
         self.prvName1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/prvDf_1.csv'
         self.announcement="./data/Announcement_covid19_290363n_1.csv"
         self.announcement1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/Announcement_covid19_290363n_1.csv'
+        self.screeningBkk="./data/CovidScreening_BKK.csv"
+        self.screeningBkk1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/CovidScreening_BKK_1.csv'
         #self.gmaps = GoogleMaps('AIzaSyCYA0c5qppFhpcGeWK-e1QIT6EBS3LoMx4')  # my account API, replace with yours
 
     def LoadData_Timeline(self):
@@ -169,6 +171,18 @@ class PrepData(object):
             
 
         return dfAnn
+
+    def LoadData_CovidScreeningBKK_Excel(self):
+        try:
+            filename=self.screeningBkk
+            dfScr=pd.read_csv(filename)
+            
+        except:
+            filename=self.screeningBkk1
+            dfScr=pd.read_csv(filename)
+            
+
+        return dfScr
 
     def Load_prvDict(self):
         try:
@@ -781,24 +795,27 @@ class MakePlot(object):
         )     
         return fig2
 
-    def MapPlot_Announcement(self,dfIn):
-        
+    def MapPlot_Announcement(self,dfIn, dfIn_1):
         latitude = 13.736717
         longitude = 100.523186 
         zoom = 4 
         hovertext_value = ['สถานที่: {}<br>'.format(i) for i in dfIn['สถานที่']]
+        hovertext_value_1 = ['ด่านคัดกรอง: {}<br>'.format(j) for j in dfIn_1['Location']]
 
         colorList=dfIn['Location'].values.tolist()
+        colorList_1=dfIn_1['Location'].values.tolist()
         #textList=dfIn['Attribute'].values.tolist()
         
-        fig2 = go.Figure(go.Scattermapbox(
+        fig2 = go.Figure()
+        
+        fig2.add_trace(go.Scattermapbox(
             lat=dfIn['lat'],
             lon=dfIn['lon'],
             mode='markers',
             marker=go.scattermapbox.Marker(
                 color=['#d7191c' for i in colorList],
                 #size=[i**(1/3) for i in dfIn['Value']],
-                sizemin=1,
+                sizemin=2,
                 sizemode='area',
                 #sizeref=2.*max([math.sqrt(i)
                 #           for i in dfIn['Value']])/(100.**2),
@@ -806,7 +823,28 @@ class MakePlot(object):
             #text=textList,
             hovertext=hovertext_value,
             hovertemplate="%{hovertext}<br>" +
-                        "<extra></extra>")
+                        "<extra></extra>",
+            name="สถานที่")
+            
+            )
+        fig2.add_trace(go.Scattermapbox(
+            lat=dfIn_1['lat'],
+            lon=dfIn_1['lon'],
+            mode='markers',
+            marker=go.scattermapbox.Marker(
+                color=['#228B22' for i in colorList_1],
+                #size=[i**(1/3) for i in dfIn['Value']],
+                sizemin=2,
+                sizemode='area',
+                #sizeref=2.*max([math.sqrt(i)
+                #           for i in dfIn['Value']])/(100.**2),
+                ),
+            #text=textList,
+            hovertext=hovertext_value_1,
+            hovertemplate="%{hovertext}<br>" +
+                        "<extra></extra>",
+            name='ด่านคัดกรอง กทม')
+            
             )
         fig2.update_layout(
             plot_bgcolor='#ffffff',

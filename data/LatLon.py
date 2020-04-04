@@ -5,9 +5,11 @@ gmaps = GoogleMaps('AIzaSyCYA0c5qppFhpcGeWK-e1QIT6EBS3LoMx4')  # my account API,
 
 filename1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/prvDf.xlsx'
 filename2=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/Announcement_covid19_290363n.xlsx'
+filename3=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/CovidScreening_BKK.xlsx'
 
 dfPrv=pd.read_excel(filename1)
 dfAnn=pd.read_excel(filename2)
+dfScr=pd.read_excel(filename3)
 
 def LatLon_1(dfIn, colName):
     dfIn['lat'] = ""
@@ -27,10 +29,13 @@ def LatLon_1(dfIn, colName):
     return dfIn
 
 dfPrv=LatLon_1(dfPrv, 'PrvTh')
-dfAnn=LatLon_1(dfAnn, 'Location')
+#dfAnn=LatLon_1(dfAnn, 'Location')
+#dfScr=LatLon_1(dfScr,'Location')
 
 fileout1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/prvDf_1.csv'
 fileout2=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/Announcement_covid19_290363n_1.csv'
+fileout3=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/CovidScreening_BKK_1.csv'
 
 dfPrv.to_csv(fileout1)
-dfAnn.to_csv(fileout2)
+#dfAnn.to_csv(fileout2)
+#dfScr.to_csv(fileout3)
