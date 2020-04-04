@@ -155,7 +155,8 @@ class PrepData(object):
 
     def Load_prvDict(self):
         #filein=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/prvDf.xlsx'
-        filename=os.listdir('./data/')
+        #filename=os.listdir('./data/')
+        filename='./data/prvDf.xlsx'
         print(' filename : ',filename, ' ==> ',type(filename))
         dfPrv=pd.read_excel(filename)
         
