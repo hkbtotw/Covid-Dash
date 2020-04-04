@@ -686,7 +686,7 @@ class MakePlot(object):
         
         latitude = 13.736717
         longitude = 100.523186 
-        zoom = 7 
+        zoom = 4 
         hovertext_value = ['Confirmed: {:,d}<br>'.format(i) for i in dfIn['Value']]
 
         colorList=dfIn['Value'].values.tolist()
