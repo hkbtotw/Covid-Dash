@@ -157,8 +157,7 @@ class PrepData(object):
         #filein=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/prvDf.xlsx'
         filename=os.listdir('./data/')
         print(' filename : ',filename)
-        filename=filename+'prvDf.xlsx'
-        dfPrv=pd.read_excel(filename)
+        dfPrv=pd.read_excel(filename[0])
         
         #dfPrv=pd.read_excel(filein)
         thList=dfPrv['PrvTh'].values.tolist()
