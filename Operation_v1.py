@@ -1,3 +1,4 @@
+import os
 import requests
 import pandas as pd
 import json
@@ -154,26 +155,32 @@ class PrepData(object):
 
     def Load_prvDict(self):
         #filein=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/prvDf.xlsx'
+        filename=os.listdir('./data/')
+        print(' filename : ',filename)
+        filename=filename+'prvDf.xlsx'
+        dfPrv=pd.read_excel(filename)
+        
         #dfPrv=pd.read_excel(filein)
-        #thList=dfPrv['PrvTh'].values.tolist()
+        thList=dfPrv['PrvTh'].values.tolist()
         #print(thList)
-        #enList=dfPrv['PrvEn'].values.tolist()
+        enList=dfPrv['PrvEn'].values.tolist()
         #print(enList)
         
-        thList=['อ่างทอง', 'อำนาจเจริญ', 'กรุงเทพมหานคร', 'บึงกาฬ', 'บุรีรัมย์', 'ฉะเชิงเทรา', 'ชัยนาท', 'ชัยภูมิ', 'จันทบุรี', 'เชียงใหม่', 
-        'เชียงราย', 'ชลบุรี', 'ชุมพร', 'กาฬสินธุ์', 'กาญจนบุรี', 'ขอนแก่น', 'กระบี่', 'ลำพูน', 'เลย', 'ลพบุรี', 'แม่ฮ่องสอน', 'มหาสารคาม',
-         'มุกดาหาร', 'นครนายก', 'นครปฐม', 'นครพนม', 'นครราชสีมา', 'นครสวรรค์', 'นครศรีธรรมราช', 'น่าน', 'นราธิวาส', 'หนองบัวลำภู', 'หนองคาย',
-          'นนทบุรี', 'ประเทศไทย', 'ปทุมธานี', 'ปัตตานี', 'พังงา', 'พัทลุง', 'พะเยา', 'เพชรบูรณ์', 'เพชรบุรี', 'พิจิตร', 'พิษณุโลก', 'อยุธยา',
-           'แพร่', 'ภูเก็ต', 'ปราจีนบุรี', 'ประจวบคีรีขันธ์', 'ระนอง', 'ราชบุรี', 'ระยอง', 'ร้อยเอ็ด', 'สระแก้ว', 'สกลนคร', 'สมุทรปราการ', 'สมุทรสาคร',
-            'สมุทรสงคราม', 'สระบุรี', 'สตูล', 'สิงห์บุรี', 'ศรีสะเกษ', 'สงขลา', 'สุโขทัย', 'สุพรรณบุรี', 'สุราษฎร์ธานี', 'สุรินทร์', 'ตาก',
-             'ตราด', 'ตรัง', 'อุบลราชธานี', 'อุดรธานี', 'ไม่พบข้อมูล', 'อุทัยธานี', 'อุตรดิตถ์', 'ยะลา', 'ยโสธร']
-        enList=['Ang Thong', 'Amnat Charoen', 'Bangkok', 'Bueng Kan', 'Buriram', 'Chachoengsao', 'Chai Nat', 'Chaiyaphum', 'Chanthaburi', 'Chiang Mai', 'Chiang Rai', 'Chonburi', 'Chumphon', 'Kalasin', 'Kanchanaburi', 'Khon Kaen', 'Krabi', 'Lamphun', 'Loei', 'Lopburi',
-         'Mae Hong Son', 'Maha Sarakham', 'Mukdahan', 'Nakhon Nayok', 'Nakhon Pathom', 'Nakhon Phanom', 'Nakhon Ratchasima', 'Nakhon Sawan', 'Nakhon Si Thammarat', 'Nan', 'Narathiwat', 'Nong Bua Lamphu', 'Nong Khai', 'Nonthaburi', 'Northeast', 'Pathum Thani', 'Pattani',
-          'Phang Nga', 'Phatthalung', 'Phayao', 'Phetchabun', 'Phetchaburi', 'Phichit', 'Phitsanulok',
-          'Phra Nakhon Si Ayutthaya', 'Phrae', 'Phuket', 'Prachinburi', 'Prachuap Khiri Khan', 'Ranong', 'Ratchaburi', 
-         'Rayong', 'Roi Et', 'Sa Kaeo', 'Sakon Nakhon', 'Samut Prakan', 'Samut Sakhon', 'Samut Songkhram', 'Saraburi',
-         'Satun', 'Sing Buri', 'Sisaket', 'Songkhla', 'Sukhothai', 'Suphan Buri', 'Surat Thani', 'Surin', 'Tak', 'Trat',
-          'Trang', 'Ubon Ratchathani', 'Udon Thani', 'Unknown', 'Uthai Thani', 'Uttaradit', 'Yala', 'Yasothon']      
+
+#        thList=['อ่างทอง', 'อำนาจเจริญ', 'กรุงเทพมหานคร', 'บึงกาฬ', 'บุรีรัมย์', 'ฉะเชิงเทรา', 'ชัยนาท', 'ชัยภูมิ', 'จันทบุรี', 'เชียงใหม่', 
+#        'เชียงราย', 'ชลบุรี', 'ชุมพร', 'กาฬสินธุ์', 'กาญจนบุรี', 'ขอนแก่น', 'กระบี่', 'ลำพูน', 'เลย', 'ลพบุรี', 'แม่ฮ่องสอน', 'มหาสารคาม',
+#         'มุกดาหาร', 'นครนายก', 'นครปฐม', 'นครพนม', 'นครราชสีมา', 'นครสวรรค์', 'นครศรีธรรมราช', 'น่าน', 'นราธิวาส', 'หนองบัวลำภู', 'หนองคาย',
+#          'นนทบุรี', 'ประเทศไทย', 'ปทุมธานี', 'ปัตตานี', 'พังงา', 'พัทลุง', 'พะเยา', 'เพชรบูรณ์', 'เพชรบุรี', 'พิจิตร', 'พิษณุโลก', 'อยุธยา',
+#           'แพร่', 'ภูเก็ต', 'ปราจีนบุรี', 'ประจวบคีรีขันธ์', 'ระนอง', 'ราชบุรี', 'ระยอง', 'ร้อยเอ็ด', 'สระแก้ว', 'สกลนคร', 'สมุทรปราการ', 'สมุทรสาคร',
+#            'สมุทรสงคราม', 'สระบุรี', 'สตูล', 'สิงห์บุรี', 'ศรีสะเกษ', 'สงขลา', 'สุโขทัย', 'สุพรรณบุรี', 'สุราษฎร์ธานี', 'สุรินทร์', 'ตาก',
+#             'ตราด', 'ตรัง', 'อุบลราชธานี', 'อุดรธานี', 'ไม่พบข้อมูล', 'อุทัยธานี', 'อุตรดิตถ์', 'ยะลา', 'ยโสธร']
+#        enList=['Ang Thong', 'Amnat Charoen', 'Bangkok', 'Bueng Kan', 'Buriram', 'Chachoengsao', 'Chai Nat', 'Chaiyaphum', 'Chanthaburi', 'Chiang Mai', 'Chiang Rai', 'Chonburi', 'Chumphon', 'Kalasin', 'Kanchanaburi', 'Khon Kaen', 'Krabi', 'Lamphun', 'Loei', 'Lopburi',
+#         'Mae Hong Son', 'Maha Sarakham', 'Mukdahan', 'Nakhon Nayok', 'Nakhon Pathom', 'Nakhon Phanom', 'Nakhon Ratchasima', 'Nakhon Sawan', 'Nakhon Si Thammarat', 'Nan', 'Narathiwat', 'Nong Bua Lamphu', 'Nong Khai', 'Nonthaburi', 'Northeast', 'Pathum Thani', 'Pattani',
+#          'Phang Nga', 'Phatthalung', 'Phayao', 'Phetchabun', 'Phetchaburi', 'Phichit', 'Phitsanulok',
+#          'Phra Nakhon Si Ayutthaya', 'Phrae', 'Phuket', 'Prachinburi', 'Prachuap Khiri Khan', 'Ranong', 'Ratchaburi', 
+#         'Rayong', 'Roi Et', 'Sa Kaeo', 'Sakon Nakhon', 'Samut Prakan', 'Samut Sakhon', 'Samut Songkhram', 'Saraburi',
+#         'Satun', 'Sing Buri', 'Sisaket', 'Songkhla', 'Sukhothai', 'Suphan Buri', 'Surat Thani', 'Surin', 'Tak', 'Trat',
+#          'Trang', 'Ubon Ratchathani', 'Udon Thani', 'Unknown', 'Uthai Thani', 'Uttaradit', 'Yala', 'Yasothon']      
         
         print(len(thList), ' :: ',len(enList))
 
