@@ -29,6 +29,9 @@ class PrepData(object):
         self.datasetName2="https://covid19.th-stat.com/api/open/cases/sum"
         self.datasetName3="https://covid19.th-stat.com/api/open/cases"
         self.outbreakStart='12/31/2019'
+        self.prvName='./data/prvDf.xlsx'
+        self.announcement1="./data/Announcement_covid19_290363n.xlsx"
+        self.gmaps = GoogleMaps('AIzaSyCYA0c5qppFhpcGeWK-e1QIT6EBS3LoMx4')  # my account API, replace with yours
 
     def LoadData_Timeline(self):
         response = requests.get(self.datasetName1)
@@ -154,39 +157,71 @@ class PrepData(object):
         return dfData, prvDict
 
     def Load_prvDict(self):
-        #filein=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/prvDf.xlsx'
-        #filename=os.listdir('./data/')
-        filename='./data/prvDf.xlsx'
-        print(' filename : ',filename, ' ==> ',type(filename))
-        dfPrv=pd.read_excel(filename)
+        try:
+            filename=self.prvName
+            print(' filename : ',filename, ' ==> ',type(filename))
+            dfPrv=pd.read_excel(filename)
         
-        #dfPrv=pd.read_excel(filein)
-        thList=dfPrv['PrvTh'].values.tolist()
-        #print(thList)
-        enList=dfPrv['PrvEn'].values.tolist()
-        #print(enList)
-        
-
-#        thList=['อ่างทอง', 'อำนาจเจริญ', 'กรุงเทพมหานคร', 'บึงกาฬ', 'บุรีรัมย์', 'ฉะเชิงเทรา', 'ชัยนาท', 'ชัยภูมิ', 'จันทบุรี', 'เชียงใหม่', 
-#        'เชียงราย', 'ชลบุรี', 'ชุมพร', 'กาฬสินธุ์', 'กาญจนบุรี', 'ขอนแก่น', 'กระบี่', 'ลำพูน', 'เลย', 'ลพบุรี', 'แม่ฮ่องสอน', 'มหาสารคาม',
-#         'มุกดาหาร', 'นครนายก', 'นครปฐม', 'นครพนม', 'นครราชสีมา', 'นครสวรรค์', 'นครศรีธรรมราช', 'น่าน', 'นราธิวาส', 'หนองบัวลำภู', 'หนองคาย',
-#          'นนทบุรี', 'ประเทศไทย', 'ปทุมธานี', 'ปัตตานี', 'พังงา', 'พัทลุง', 'พะเยา', 'เพชรบูรณ์', 'เพชรบุรี', 'พิจิตร', 'พิษณุโลก', 'อยุธยา',
-#           'แพร่', 'ภูเก็ต', 'ปราจีนบุรี', 'ประจวบคีรีขันธ์', 'ระนอง', 'ราชบุรี', 'ระยอง', 'ร้อยเอ็ด', 'สระแก้ว', 'สกลนคร', 'สมุทรปราการ', 'สมุทรสาคร',
-#            'สมุทรสงคราม', 'สระบุรี', 'สตูล', 'สิงห์บุรี', 'ศรีสะเกษ', 'สงขลา', 'สุโขทัย', 'สุพรรณบุรี', 'สุราษฎร์ธานี', 'สุรินทร์', 'ตาก',
-#             'ตราด', 'ตรัง', 'อุบลราชธานี', 'อุดรธานี', 'ไม่พบข้อมูล', 'อุทัยธานี', 'อุตรดิตถ์', 'ยะลา', 'ยโสธร']
-#        enList=['Ang Thong', 'Amnat Charoen', 'Bangkok', 'Bueng Kan', 'Buriram', 'Chachoengsao', 'Chai Nat', 'Chaiyaphum', 'Chanthaburi', 'Chiang Mai', 'Chiang Rai', 'Chonburi', 'Chumphon', 'Kalasin', 'Kanchanaburi', 'Khon Kaen', 'Krabi', 'Lamphun', 'Loei', 'Lopburi',
-#         'Mae Hong Son', 'Maha Sarakham', 'Mukdahan', 'Nakhon Nayok', 'Nakhon Pathom', 'Nakhon Phanom', 'Nakhon Ratchasima', 'Nakhon Sawan', 'Nakhon Si Thammarat', 'Nan', 'Narathiwat', 'Nong Bua Lamphu', 'Nong Khai', 'Nonthaburi', 'Northeast', 'Pathum Thani', 'Pattani',
-#          'Phang Nga', 'Phatthalung', 'Phayao', 'Phetchabun', 'Phetchaburi', 'Phichit', 'Phitsanulok',
-#          'Phra Nakhon Si Ayutthaya', 'Phrae', 'Phuket', 'Prachinburi', 'Prachuap Khiri Khan', 'Ranong', 'Ratchaburi', 
-#         'Rayong', 'Roi Et', 'Sa Kaeo', 'Sakon Nakhon', 'Samut Prakan', 'Samut Sakhon', 'Samut Songkhram', 'Saraburi',
-#         'Satun', 'Sing Buri', 'Sisaket', 'Songkhla', 'Sukhothai', 'Suphan Buri', 'Surat Thani', 'Surin', 'Tak', 'Trat',
-#          'Trang', 'Ubon Ratchathani', 'Udon Thani', 'Unknown', 'Uthai Thani', 'Uttaradit', 'Yala', 'Yasothon']      
+            #dfPrv=pd.read_excel(filein)
+            thList=dfPrv['PrvTh'].values.tolist()
+            #print(thList)
+            enList=dfPrv['PrvEn'].values.tolist()
+            #print(enList)
+        except:
+            thList=['อ่างทอง', 'อำนาจเจริญ', 'กรุงเทพมหานคร', 'บึงกาฬ', 'บุรีรัมย์', 'ฉะเชิงเทรา', 'ชัยนาท', 'ชัยภูมิ', 'จันทบุรี', 'เชียงใหม่', 
+        'เชียงราย', 'ชลบุรี', 'ชุมพร', 'กาฬสินธุ์', 'กาญจนบุรี', 'ขอนแก่น', 'กระบี่', 'ลำพูน', 'เลย', 'ลพบุรี', 'แม่ฮ่องสอน', 'มหาสารคาม',
+         'มุกดาหาร', 'นครนายก', 'นครปฐม', 'นครพนม', 'นครราชสีมา', 'นครสวรรค์', 'นครศรีธรรมราช', 'น่าน', 'นราธิวาส', 'หนองบัวลำภู', 'หนองคาย',
+          'นนทบุรี', 'ประเทศไทย', 'ปทุมธานี', 'ปัตตานี', 'พังงา', 'พัทลุง', 'พะเยา', 'เพชรบูรณ์', 'เพชรบุรี', 'พิจิตร', 'พิษณุโลก', 'อยุธยา',
+           'แพร่', 'ภูเก็ต', 'ปราจีนบุรี', 'ประจวบคีรีขันธ์', 'ระนอง', 'ราชบุรี', 'ระยอง', 'ร้อยเอ็ด', 'สระแก้ว', 'สกลนคร', 'สมุทรปราการ', 'สมุทรสาคร',
+            'สมุทรสงคราม', 'สระบุรี', 'สตูล', 'สิงห์บุรี', 'ศรีสะเกษ', 'สงขลา', 'สุโขทัย', 'สุพรรณบุรี', 'สุราษฎร์ธานี', 'สุรินทร์', 'ตาก',
+             'ตราด', 'ตรัง', 'อุบลราชธานี', 'อุดรธานี', 'ไม่พบข้อมูล', 'อุทัยธานี', 'อุตรดิตถ์', 'ยะลา', 'ยโสธร']
+            enList=['Ang Thong', 'Amnat Charoen', 'Bangkok', 'Bueng Kan', 'Buriram', 'Chachoengsao', 'Chai Nat', 'Chaiyaphum', 'Chanthaburi', 'Chiang Mai', 'Chiang Rai', 'Chonburi', 'Chumphon', 'Kalasin', 'Kanchanaburi', 'Khon Kaen', 'Krabi', 'Lamphun', 'Loei', 'Lopburi',
+         'Mae Hong Son', 'Maha Sarakham', 'Mukdahan', 'Nakhon Nayok', 'Nakhon Pathom', 'Nakhon Phanom', 'Nakhon Ratchasima', 'Nakhon Sawan', 'Nakhon Si Thammarat', 'Nan', 'Narathiwat', 'Nong Bua Lamphu', 'Nong Khai', 'Nonthaburi', 'Northeast', 'Pathum Thani', 'Pattani',
+          'Phang Nga', 'Phatthalung', 'Phayao', 'Phetchabun', 'Phetchaburi', 'Phichit', 'Phitsanulok',
+          'Phra Nakhon Si Ayutthaya', 'Phrae', 'Phuket', 'Prachinburi', 'Prachuap Khiri Khan', 'Ranong', 'Ratchaburi', 
+         'Rayong', 'Roi Et', 'Sa Kaeo', 'Sakon Nakhon', 'Samut Prakan', 'Samut Sakhon', 'Samut Songkhram', 'Saraburi',
+         'Satun', 'Sing Buri', 'Sisaket', 'Songkhla', 'Sukhothai', 'Suphan Buri', 'Surat Thani', 'Surin', 'Tak', 'Trat',
+          'Trang', 'Ubon Ratchathani', 'Udon Thani', 'Unknown', 'Uthai Thani', 'Uttaradit', 'Yala', 'Yasothon']      
         
         print(len(thList), ' :: ',len(enList))
 
         prvDict=dict(zip(enList,thList))
 
         return prvDict
+
+    def LatLon_Announcement(self, dfIn):
+        dfIn['lat'] = ""
+        dfIn['lon'] = ""
+
+        for x in range(len(dfIn)):
+            geocode_result = self.gmaps.geocode(dfIn['Location'][x])
+
+            #print(dfData['Attribute'][x], '  :::    ',geocode_result[0]['geometry'])
+            #print(dfData['Attribute'][x],'  ===>    ',geocode_result[0]['geometry']['location'])
+            dfIn['lat'][x] = geocode_result[0]['geometry']['location'] ['lat']
+            dfIn['lon'][x] = geocode_result[0]['geometry']['location']['lng']
+
+            #latList=dfIn['lat'].values.tolist()
+            #longList=dfIn['long'].values.tolist()
+            #pairList=list(zip(latList,longList))
+
+        #print(dfData)
+        return dfIn
+
+    def Load_Announcement(self):
+        try:
+            filename=self.announcement1
+            dfOut=pd.read_excel(filename)
+        
+        except:
+            filename=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/Announcement_covid19_290363n.xlsx'
+            dfOut=pd.read_excel(filename)
+        
+        dfOut=self.LatLon_Announcement(dfOut)
+        #filename=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/check.csv'
+        #dfOut.to_csv(filename)
+
+        return dfOut
 
     def CalcTrendTable(self,dfIn):
         dfOut=dfIn[dfIn['Confirmed']>=100].copy().reset_index()
@@ -730,6 +765,65 @@ class MakePlot(object):
                 align='center',
                 showarrow=False,
                 text="Points are placed based on data geolocation levels.<br>Province/State level - Australia, China, Canada, and United States; Country level- other countries.",
+                xref="paper",
+                yref="paper",
+                font=dict(size=10, color='#292929'),
+            )],
+        mapbox=go.layout.Mapbox(
+            accesstoken=self.mapbox_access_token,
+            style="light",
+            # The direction you're facing, measured clockwise as an angle from true north on a compass
+            bearing=0,
+            center=go.layout.mapbox.Center(
+                lat=latitude,
+                lon=longitude
+            ),
+            pitch=0,
+            zoom=zoom
+             )
+        )     
+        return fig2
+
+    def MapPlot_Announcement(self,dfIn):
+        
+        latitude = 13.736717
+        longitude = 100.523186 
+        zoom = 4 
+        hovertext_value = ['สถานที่: {}<br>'.format(i) for i in dfIn['สถานที่']]
+
+        colorList=dfIn['Location'].values.tolist()
+        #textList=dfIn['Attribute'].values.tolist()
+        
+        fig2 = go.Figure(go.Scattermapbox(
+            lat=dfIn['lat'],
+            lon=dfIn['lon'],
+            mode='markers',
+            marker=go.scattermapbox.Marker(
+                color=['#d7191c' for i in colorList],
+                #size=[i**(1/3) for i in dfIn['Value']],
+                sizemin=1,
+                sizemode='area',
+                #sizeref=2.*max([math.sqrt(i)
+                #           for i in dfIn['Value']])/(100.**2),
+                ),
+            #text=textList,
+            hovertext=hovertext_value,
+            hovertemplate="%{hovertext}<br>" +
+                        "<extra></extra>")
+            )
+        fig2.update_layout(
+            plot_bgcolor='#ffffff',
+            paper_bgcolor='#ffffff',
+            margin=go.layout.Margin(l=10, r=10, b=10, t=0, pad=40),
+            hovermode='closest',
+            transition={'duration': 50},
+            annotations=[
+            dict(
+                x=.5,
+                y=-.0,
+                align='center',
+                showarrow=False,
+                text="Points are placed based on data geolocation levels",
                 xref="paper",
                 yref="paper",
                 font=dict(size=10, color='#292929'),
