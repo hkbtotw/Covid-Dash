@@ -33,7 +33,7 @@ class PrepData(object):
         self.prvName1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/prvDf_1.csv'
         self.announcement="./data/Announcement_covid19_290363n_1.csv"
         self.announcement1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/Announcement_covid19_290363n_1.csv'
-        self.screeningBkk="./data/CovidScreening_BKK.csv"
+        self.screeningBkk="./data/CovidScreening_BKK_1.csv"
         self.screeningBkk1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/CovidScreening_BKK_1.csv'
         #self.gmaps = GoogleMaps('AIzaSyCYA0c5qppFhpcGeWK-e1QIT6EBS3LoMx4')  # my account API, replace with yours
 
