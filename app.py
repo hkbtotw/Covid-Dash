@@ -12,16 +12,23 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 tickFont = {'size':12, 'color':"rgb(30,30,30)", 'family':"Courier New, monospace"}
 
+# Declare Class
 prepData=PrepData()
 makePlot=MakePlot()
-dfLoad=prepData.LoadData()
 
+# Data Processing
+dfLoad=prepData.LoadData_Timeline()
+dfLoad_2=prepData.LoadData_Casesum()
+dfLoad_3=makePlot.LatLon_Province(dfLoad_2)
 pConfirmed, pRecovered, pDeaths, daysOutbreak, maxDate, Confirmed, Recovered, Deaths, newConfirmed, newCsym, newRecovered, newRsym, newDeaths, newDsym=prepData.NumberPlateCalculation(dfLoad)
+dfTrend=prepData.CalcTrendTable(dfLoad)
 
-##########  Plot
 
-fig_confirmed, fig_combine, fig_rate=makePlot.ProgressUpdatePlot(dfLoad)
+# Prepare Plot
 
+fig_confirmed, fig_combine, fig_rate, fig_confirmedChange=makePlot.ProgressUpdatePlot(dfLoad)
+fig_curve_tab=makePlot.TrendPlot(dfTrend, daysOutbreak)
+fig_map=makePlot.MapPlot(dfLoad_3)
 
 #########
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -169,8 +176,75 @@ app.layout = html.Div(
                                     figure=fig_rate),
                                   ]),
                      ]),  ### end fig
+        ######################### Curve plot
+        html.Div(
+            id='dcc-curve',
+            style={'marginLeft': '1.5%', 'marginRight': '1.5%', 'marginBottom': '.5%'},
+                 children=[
+                     html.Div(style={'width': '48.31%', 'marginRight': '.8%', 'display': 'inline-block', 'verticalAlign': 'top',
+                                     'box-shadow':'0px 0px 10px #ededee', 'border': '1px solid #ededee',
+                                     },
+                              children=[
+                                  html.H5(style={'textAlign': 'center', 'backgroundColor': '#ffffff',
+                                                 'color': '#292929', 'padding': '1rem', 'marginBottom': '0', 'marginTop': '0'},
+                                               children='Confirmed case trajectories'),
+                                  dcc.Graph(
+                                      id='fig_curve_tab',
+                                      style={'height': '300px'},
+                                      figure=fig_curve_tab),
+                                 
+                                      ], ###  children
+                                  ),  ### html.div
+          
+                                             
+                     html.Div(style={'width': '48.31%', 'marginRight': '.8%', 'display': 'inline-block', 'verticalAlign': 'top',
+                                     'box-shadow':'0px 0px 10px #ededee', 'border': '1px solid #ededee',
+                                     },
+                              children=[
+                                  html.H5(style={'textAlign': 'center', 'backgroundColor': '#ffffff',
+                                                 'color': '#292929', 'padding': '1rem', 'marginBottom': '0', 'marginTop': '0'},
+                                               children='%Change of Confirmed case'),
+                                    dcc.Graph(
+                                      id='fig_confirmedChange1',
+                                      style={'height': '300px'}                                      ,
+                                      figure=fig_confirmedChange), 
+                                 
+                                      ], ###  children
+                                  ),  ### html.div
 
 
+                                 ], ### children
+
+
+
+                              ),
+                    ##############  end curve plot
+        ##### map plot
+        html.Div(
+            id='dcc-map',
+            style={'marginLeft': '1.5%', 'marginRight': '1.5%', 'marginBottom': '.5%'},
+                 children=[
+                     html.Div(style={'width': '61.31%', 'marginRight': '.8%', 'display': 'inline-block', 'verticalAlign': 'top',
+                                     'box-shadow':'0px 0px 10px #ededee', 'border': '1px solid #ededee',
+                                     },
+                              children=[
+                                  html.H5(style={'textAlign': 'center', 'backgroundColor': '#ffffff',
+                                                 'color': '#292929', 'padding': '1rem', 'marginBottom': '0', 'marginTop': '0'},
+                                               children='Confirmed case by Province'),
+                                  dcc.Graph(
+                                      id='map',
+                                      style={'height':'500'},
+                                      figure=fig_map
+                                    ),    
+                          
+                                      ]
+
+                                      
+                                  ),
+                                  
+                              ]),
+                    ##############  end map plot
+        
         ########### Plot end
 
         ]), # Children outermost
@@ -178,37 +252,7 @@ app.layout = html.Div(
 
 ]) # outter most
 
-"""
-def barchart(data, metrics, prefix, yaxisTitle):
-    #print(data.date, '== date ==  ',len(data.date))
-    #print(' prefix : ', prefix)
-    #print(' metrics : ', metrics[0])
-    
-    col=prefix+metrics[0]
-    #print(' pm :: ',col, ' ==> ',type(col))
-    #print(data.CumConfirmed, ' ++ data ++  ',len(data.CumConfirmed))
 
-    figure = go.Figure(data=[
-        go.Bar( 
-            name=metric, x=data.date, y=data.CumConfirmed,
-            marker_line_color='rgb(0,0,0)', marker_line_width=1,
-            marker_color={ 'Confirmed':'rgb(100,140,240)'}[metric]) for metric in metrics])
-    #figure.update_layout( 
-    #          barmode='group', legend=dict(x=.05, y=0.95, font={'size':15}, bgcolor='rgba(240,240,240,0.5)'), 
-    #          plot_bgcolor='#FFFFFF', font=tickFont).update_xaxes(title="", tickangle=-90, type='category', showgrid=True, gridcolor='#DDDDDD', 
-    #          tickfont=tickFont, ticktext=data.dateStr, tickvals=data.date).update_yaxes(title=yaxisTitle, showgrid=True, gridcolor='#DDDDDD')
-    return figure
-
-
-
-@app.callback(
-    Output('plot_cum_metrics', 'figure'), 
-    [Input('country', 'value'), Input('state', 'value'), Input('metrics', 'value')]
-)
-def update_plot_cum_metrics(country, state, metrics):
-    data = nonreactive_data(country, state)
-    return barchart(data, metrics, prefix="Cum", yaxisTitle="Cumulated Cases")
-"""
 server = app.server
 
 if __name__ == '__main__':
