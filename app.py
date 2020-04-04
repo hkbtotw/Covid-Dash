@@ -19,10 +19,11 @@ makePlot=MakePlot()
 # Data Processing
 dfLoad=prepData.LoadData_Timeline()
 dfLoad_2=prepData.LoadData_Casesum()
-dfLoad_3=makePlot.LatLon_Province(dfLoad_2)
+dfLoad_4, prvDict=prepData.LoadData_CaseDesc()
+dfLoad_3=makePlot.LatLon_Province(dfLoad_2, prvDict)
+
 pConfirmed, pRecovered, pDeaths, daysOutbreak, maxDate, Confirmed, Recovered, Deaths, newConfirmed, newCsym, newRecovered, newRsym, newDeaths, newDsym=prepData.NumberPlateCalculation(dfLoad)
 dfTrend=prepData.CalcTrendTable(dfLoad)
-
 
 # Prepare Plot
 
@@ -203,7 +204,7 @@ app.layout = html.Div(
                               children=[
                                   html.H5(style={'textAlign': 'center', 'backgroundColor': '#ffffff',
                                                  'color': '#292929', 'padding': '1rem', 'marginBottom': '0', 'marginTop': '0'},
-                                               children='%Change of Confirmed case'),
+                                               children='%Change (from yesterday) of daily confirmed case'),
                                     dcc.Graph(
                                       id='fig_confirmedChange1',
                                       style={'height': '300px'}                                      ,
@@ -224,13 +225,13 @@ app.layout = html.Div(
             id='dcc-map',
             style={'marginLeft': '1.5%', 'marginRight': '1.5%', 'marginBottom': '.5%'},
                  children=[
-                     html.Div(style={'width': '61.31%', 'marginRight': '.8%', 'display': 'inline-block', 'verticalAlign': 'top',
+                     html.Div(style={'width': '48.31%', 'marginRight': '.8%', 'display': 'inline-block', 'verticalAlign': 'top',
                                      'box-shadow':'0px 0px 10px #ededee', 'border': '1px solid #ededee',
                                      },
                               children=[
                                   html.H5(style={'textAlign': 'center', 'backgroundColor': '#ffffff',
                                                  'color': '#292929', 'padding': '1rem', 'marginBottom': '0', 'marginTop': '0'},
-                                               children='Confirmed case by Province'),
+                                               children='#Confirmed case by Province'),
                                   dcc.Graph(
                                       id='map',
                                       style={'height':'500'},

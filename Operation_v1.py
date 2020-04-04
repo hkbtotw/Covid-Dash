@@ -26,6 +26,7 @@ class PrepData(object):
     def __init__(self):
         self.datasetName1="https://covid19.th-stat.com/api/open/timeline"
         self.datasetName2="https://covid19.th-stat.com/api/open/cases/sum"
+        self.datasetName3="https://covid19.th-stat.com/api/open/cases"
         self.outbreakStart='12/31/2019'
 
     def LoadData_Timeline(self):
@@ -117,6 +118,40 @@ class PrepData(object):
 
         return dfData
 
+    def LoadData_CaseDesc(self):
+        response = requests.get(self.datasetName3)
+        #print(response.status_code)
+
+        result=response.json()
+
+        #print(result,' == ',type(result))
+
+        headerColumn=list(result.keys())
+
+        header1=list(result['Data'][0].keys())
+
+        dfData=pd.DataFrame(columns=['ConfirmDate', 'No', 'Age', 'Gender', 'GenderEn', 'Nation', 'NationEn', 'Province', 'ProvinceId', 'ProvinceEn'])
+
+        for n in range(len(result['Data'])):
+            #print(n)
+            newrow={'ConfirmDate':result['Data'][n][header1[0]], 'No':result['Data'][n][header1[1]], 'Age':result['Data'][n][header1[2]], 
+            'Gender':result['Data'][n][header1[3]], 'GenderEn':result['Data'][n][header1[4]], 'Nation':result['Data'][n][header1[5]],
+            'NationEn':result['Data'][n][header1[6]], 'Province':result['Data'][n][header1[7]], 'ProvinceId':result['Data'][n][header1[8]],
+            'ProvinceEn':result['Data'][n][header1[10]]}
+            dfData=dfData.append(newrow, ignore_index=True)
+
+        #print(dfData)
+
+        # Create Dict of Province List to use in Location search in map api
+        provincethList=list(set(dfData['Province'].values.tolist()))
+        provinceEnList=[]
+        for n in provincethList:
+            provinceEnList.append(list(set(list(dfData[dfData['Province']==n]['ProvinceEn'])))[0])
+
+        prvDict=dict(zip(provinceEnList, provincethList))
+
+        return dfData, prvDict
+
     def CalcTrendTable(self,dfIn):
         dfOut=dfIn[dfIn['Confirmed']>=100].copy().reset_index()
         dayList=np.arange(1, len(dfOut)+1)
@@ -173,18 +208,20 @@ class MakePlot(object):
         self.mapbox_access_token="pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
         self.gmaps = GoogleMaps('AIzaSyCYA0c5qppFhpcGeWK-e1QIT6EBS3LoMx4')  # my account API, replace with yours
 
-    def LatLon_Province(self, dfIn):
+    def LatLon_Province(self, dfIn, prvDict):
         dfData=dfIn[dfIn['Category']=='Province'].copy().reset_index()
 
         dfData['lat'] = ""
         dfData['lon'] = ""
 
         for x in range(len(dfData)):
+            dummy=prvDict[dfData['Attribute'][x]]
+            #print(dfData['Attribute'][x], ' ::  ',dummy)
             #print('1 :  ',dfData['Province'][x])
-            if(dfData['Attribute'][x]=='Unknown'):
-                dfData['Attribute'][x]='Thailand'
+            if(dummy=='ไม่พบข้อมูล'):
+                dummy='Thailand'
             #print(' 2   : ',dfData['Province'][x])
-            geocode_result = self.gmaps.geocode(dfData['Attribute'][x])
+            geocode_result = self.gmaps.geocode(dummy)
 
             #print(dfData['Attribute'][x], '  :::    ',geocode_result[0]['geometry'])
             #print(dfData['Attribute'][x],'  ===>    ',geocode_result[0]['geometry']['location'])
@@ -434,7 +471,7 @@ class MakePlot(object):
                                 mode='lines+markers',
                                 line_shape='spline',
                                 name='Thailand',
-                                line=dict(color='#626262', width=4),
+                                line=dict(color='#921113', width=4),
                                 marker=dict(size=4, color='#f4f4f2',
                                             line=dict(width=1, color='#626262')),
                                 text=[datetime.strftime(
@@ -540,7 +577,7 @@ class MakePlot(object):
                                      line_shape='spline',
                                      name='Thailand',
                                      opacity=0.3,
-                                     line=dict(color='#636363', width=1.5),
+                                     line=dict(color='#921113', width=1.5),
                                      text=['Thailand' for i in dfIn['DayElapsed']],
                                      hovertemplate='<b>%{text}</b><br>' +
                                                    '<br>%{x} days after 100 cases<br>' +
