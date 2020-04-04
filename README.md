@@ -7,9 +7,9 @@ http://covid-dash-app.herokuapp.com/
 <b>Sample Images:<br/></b>
 Web app dashbaord built by <b>Dash<b> </b>
 
-<img src=https://github.com/hkbtotw/Covid-Dash/blob/master/Demo_dashboard_01.JPG alt="Analog" width="200"/>
+<img src=https://github.com/hkbtotw/Covid-Dash/blob/master/Demo_dashboard_01.JPG alt="Analog" width="600"/>
 
 <b>Note</b></b>
-Problem with the dashboard is the time limit for Heroku worker to be in idle (around 30 milli seconds) </b>
-This prevents loading of more data to use in dashboard. </b>
-Need to figure out how to do it. </b>
+<p>Problem with the dashboard is the time limit for Heroku worker to be in idle (around 30 milli seconds) </p>
+<p>This prevents loading of more data to use in dashboard. </p>
+<p>Need to figure out how to do it. </p>
