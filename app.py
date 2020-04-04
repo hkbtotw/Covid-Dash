@@ -19,7 +19,8 @@ makePlot=MakePlot()
 # Data Processing
 dfLoad=prepData.LoadData_Timeline()
 dfLoad_2=prepData.LoadData_Casesum()
-dfLoad_4, prvDict=prepData.LoadData_CaseDesc()
+#dfLoad_4, prvDict=prepData.LoadData_CaseDesc()
+prvDict=prepData.Load_prvDict()
 dfLoad_3=makePlot.LatLon_Province(dfLoad_2, prvDict)
 
 pConfirmed, pRecovered, pDeaths, daysOutbreak, maxDate, Confirmed, Recovered, Deaths, newConfirmed, newCsym, newRecovered, newRsym, newDeaths, newDsym=prepData.NumberPlateCalculation(dfLoad)
