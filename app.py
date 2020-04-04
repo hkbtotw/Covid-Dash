@@ -21,7 +21,7 @@ dfLoad=prepData.LoadData_Timeline()
 dfLoad_2=prepData.LoadData_Casesum()
 #dfLoad_4, prvDict=prepData.LoadData_CaseDesc() # cannot include for heroku web app , it makes workers idle longer than 30 sec so timeout
 prvDict=prepData.Load_prvDict()
-dfAnn=prepData.Load_Announcement()
+#dfAnn=prepData.Load_Announcement()  # map-ann
 dfLoad_3=makePlot.LatLon_Province(dfLoad_2, prvDict)
 
 pConfirmed, pRecovered, pDeaths, daysOutbreak, maxDate, Confirmed, Recovered, Deaths, newConfirmed, newCsym, newRecovered, newRsym, newDeaths, newDsym=prepData.NumberPlateCalculation(dfLoad)
@@ -32,7 +32,7 @@ dfTrend=prepData.CalcTrendTable(dfLoad)
 fig_confirmed, fig_combine, fig_rate, fig_confirmedChange=makePlot.ProgressUpdatePlot(dfLoad)
 fig_curve_tab=makePlot.TrendPlot(dfTrend, daysOutbreak)
 fig_map=makePlot.MapPlot(dfLoad_3)
-fig_mapAnn=makePlot.MapPlot_Announcement(dfAnn)
+#fig_mapAnn=makePlot.MapPlot_Announcement(dfAnn)  # map-ann
 
 #########
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -246,23 +246,22 @@ app.layout = html.Div(
                                       
                                   ),   #### Div inside
                                   
-                      html.Div(style={'width': '48.31%', 'marginRight': '.8%', 'display': 'inline-block', 'verticalAlign': 'top',
-                                     'box-shadow':'0px 0px 10px #ededee', 'border': '1px solid #ededee',
-                                     },
-                              children=[
-                                  html.H5(style={'textAlign': 'center', 'backgroundColor': '#ffffff',
-                                                 'color': '#292929', 'padding': '1rem', 'marginBottom': '0', 'marginTop': '0'},
-                                               children='Locations by Incidents'),
-                                  dcc.Graph(
-                                      id='map-ann',
-                                      style={'height':'500'},
-                                      figure=fig_mapAnn
-                                    ),    
-                          
-                                      ]  ####  children inside 2
-
-                                      
-                                  ), #### div inside 2
+                #      html.Div(style={'width': '48.31%', 'marginRight': '.8%', 'display': 'inline-block', 'verticalAlign': 'top',
+                #                     'box-shadow':'0px 0px 10px #ededee', 'border': '1px solid #ededee',
+                #                     },
+                #              children=[
+                #                  html.H5(style={'textAlign': 'center', 'backgroundColor': '#ffffff',
+                #                                 'color': '#292929', 'padding': '1rem', 'marginBottom': '0', 'marginTop': '0'},
+                #                               children='Locations by Incidents'),
+                #                  dcc.Graph(
+                #                      id='map-ann',
+                #                      style={'height':'500'},
+                #                      figure=fig_mapAnn
+                #                    ),    
+                #          
+                #                      ]  ####  children inside 2
+                #                      
+                #                  ), #### div inside 2
                                   
                               ]    ### children outside 2      
 
