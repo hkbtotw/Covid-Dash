@@ -270,13 +270,70 @@ app.layout = html.Div(
 
                           ), ### Div outside
                     ##############  end map plot
-        
+        #### Start Histogram plot
+        html.Div(
+            id='dcc-histogram',
+            style={'marginLeft': '1.5%', 'marginRight': '1.5%', 'marginBottom': '.5%'},
+            children=[
+            html.Div(style={'width': '48.31%', 'marginRight': '.8%', 'display': 'inline-block', 'verticalAlign': 'top',
+                                     'box-shadow':'0px 0px 10px #ededee', 'border': '1px solid #ededee',
+                                     },
+            children=[                                  
+                html.H5(style={'textAlign': 'center', 'backgroundColor': '#ffffff',
+                    'color': '#292929', 'padding': '1rem', 'marginBottom': '0', 'marginTop': '0'},
+                        children='Click Dates in Box below to see Age distribution of Confirmed cases'),
+                dcc.DatePickerRange(
+                        id='my-date-picker-range',
+                        min_date_allowed=datetime(2019, 12, 31),
+                        max_date_allowed=datetime(2022, 12, 31),
+                        initial_visible_month=datetime(2020, 1, 1),
+                        start_date=datetime(2020, 1, 1).date(),
+                        end_date=datetime(2020, 12, 31).date()
+                        ),
+                dcc.Graph(
+                        id='histogram',
+                        style={'height':'500px'}
+                        )
+                     ]  ## children inside
+                ) ### div  inside
+                ]  ### children outside
+            )  ###### div outside
+ 
+                    ######### End histogram plot
         ########### Plot end
 
         ]), # Children outermost
         ##########################
 
 ]) # outter most
+
+
+@app.callback(
+    dash.dependencies.Output('histogram', 'figure'),
+    [dash.dependencies.Input('my-date-picker-range', 'start_date'),
+     dash.dependencies.Input('my-date-picker-range', 'end_date')])
+def update_output(start_date, end_date):
+    #print(start_date,' :: ', type(start_date))
+    dfNew=prepData.GenerateNewTable(dfLoad_4,start_date,end_date)
+    fig2 = go.Figure(
+        go.Histogram( x=dfNew['Age'],
+         opacity=0.75,
+         #hisnorm='probability',
+         name='Age test'  )
+        )
+    fig2.update_layout(
+        #title='test age',
+        barmode='overlay',
+        xaxis=dict(
+            title='Age'
+            ),
+        yaxis=dict(
+            title='Frequency'
+            ),
+        )
+    return fig2
+
+
 
 
 server = app.server

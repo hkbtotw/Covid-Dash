@@ -165,8 +165,8 @@ class PrepData(object):
         return datetime.strptime(test, '%Y-%m-%d')    
 
     def GenerateNewTable(self,dfIn,str_start_date,str_end_date):
-        start_date=ConvertDate_StringToDatetime_2(str_start_date)
-        end_date=ConvertDate_StringToDatetime_2(str_end_date)
+        start_date=self.ConvertDate_StringToDatetime_2(str_start_date)
+        end_date=self.ConvertDate_StringToDatetime_2(str_end_date)
         dfOut=dfIn[(dfIn['newDate']>=start_date) & (dfIn['newDate']<=end_date)].copy().reset_index()
         dfOut=dfOut.drop(columns=['index'],axis=1)
         return dfOut
