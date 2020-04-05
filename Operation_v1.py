@@ -149,16 +149,27 @@ class PrepData(object):
             dfData=dfData.append(newrow, ignore_index=True)
 
         #print(dfData)
+        text=[ self.ConvertDate_StringToDatetime(d)  for d in dfData['ConfirmDate']]
+        dfNewdate=pd.DataFrame(text)
+        dfNewdate.columns=['newDate']
+        dfData=pd.concat([dfData,dfNewdate],axis=1)
 
-        # Create Dict of Province List to use in Location search in map api
-        provincethList=list(set(dfData['Province'].values.tolist()))
-        provinceEnList=[]
-        for n in provincethList:
-            provinceEnList.append(list(set(list(dfData[dfData['Province']==n]['ProvinceEn'])))[0])
+        return dfData
 
-        prvDict=dict(zip(provinceEnList, provincethList))
+    def ConvertDate_StringToDatetime(self,test):
+        #print(test,' == ',type(test))
+        return datetime.strptime(test, '%Y-%m-%d %H:%M:%S')
 
-        return dfData, prvDict
+    def ConvertDate_StringToDatetime_2(self,test):
+        #print(test,' == ',type(test))
+        return datetime.strptime(test, '%Y-%m-%d')    
+
+    def GenerateNewTable(self,dfIn,str_start_date,str_end_date):
+        start_date=ConvertDate_StringToDatetime_2(str_start_date)
+        end_date=ConvertDate_StringToDatetime_2(str_end_date)
+        dfOut=dfIn[(dfIn['newDate']>=start_date) & (dfIn['newDate']<=end_date)].copy().reset_index()
+        dfOut=dfOut.drop(columns=['index'],axis=1)
+        return dfOut
 
     def LoadData_CaseDesc_Excel(self):
         try:
