@@ -35,7 +35,7 @@ class PrepData(object):
         self.announcement1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/Announcement_covid19_290363n_1.csv'
         self.screeningBkk="./data/CovidScreening_BKK_1.csv"
         self.screeningBkk1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/CovidScreening_BKK_1.csv'
-        #self.gmaps = GoogleMaps('AIzaSyCYA0c5qppFhpcGeWK-e1QIT6EBS3LoMx4')  # my account API, replace with yours
+        #self.gmaps = GoogleMaps('xxxxxxxxxxxxxxxxxxxxxxxxxxxx')  # my account API, replace with yours
 
     def LoadData_Timeline(self):
         response = requests.get(self.datasetName1)
@@ -302,7 +302,7 @@ class PrepData(object):
 class MakePlot(object):
     def __init__(self):
         self.mapbox_access_token="pk.eyJ1IjoicGxvdGx5bWFwYm94IiwiYSI6ImNqdnBvNDMyaTAxYzkzeW5ubWdpZ2VjbmMifQ.TXcBE-xg9BFdV2ocecc_7g"
-        #self.gmaps = GoogleMaps('AIzaSyCYA0c5qppFhpcGeWK-e1QIT6EBS3LoMx4')  # my account API, replace with yours
+        #self.gmaps = GoogleMaps('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')  # my account API, replace with yours
 
     def LatLon_Province(self, dfIn, prvDict, latDict, lonDict):
         dfData=dfIn[dfIn['Category']=='Province'].copy().reset_index()
