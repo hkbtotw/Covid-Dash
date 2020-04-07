@@ -5,7 +5,7 @@ Code used to build Covid-19 monitoring dashboard </b>
 http://covid-dash-app.herokuapp.com/
 
 <b>Sample Images:<br/></b>
-Web app dashbaord built by <b>Dash<b> </b>
+Web app dashbaord built with <b>Python Dash<b> </b>
 
 <img src=https://github.com/hkbtotw/Covid-Dash/blob/master/Demo_dashboard_01.JPG alt="Analog" width="900"/>
 
