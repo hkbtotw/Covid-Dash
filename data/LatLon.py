@@ -28,14 +28,14 @@ def LatLon_1(dfIn, colName):
     
     return dfIn
 
-dfPrv=LatLon_1(dfPrv, 'PrvTh')
+#dfPrv=LatLon_1(dfPrv, 'PrvTh')
 #dfAnn=LatLon_1(dfAnn, 'Location')
-#dfScr=LatLon_1(dfScr,'Location')
+dfScr=LatLon_1(dfScr,'Location')
 
 fileout1=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/prvDf_1.csv'
 fileout2=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/Announcement_covid19_290363n_1.csv'
 fileout3=r'C:/Users/70018928/Documents/Project2020/coronavirus-py-master/corona-app-v1/Covid-Dash/data/CovidScreening_BKK_1.csv'
 
-dfPrv.to_csv(fileout1)
+#dfPrv.to_csv(fileout1)
 #dfAnn.to_csv(fileout2)
-#dfScr.to_csv(fileout3)
+dfScr.to_csv(fileout3)
