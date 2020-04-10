@@ -20,7 +20,7 @@ makePlot=MakePlot()
 dfLoad=prepData.LoadData_Timeline()
 dfLoad_2=prepData.LoadData_Casesum()
 #dfLoad_4=prepData.LoadData_CaseDesc() # cannot include for heroku web app , it makes workers idle longer than 30 sec so timeout
-prvDict, latDict, lonDict=prepData.Load_prvDict()
+prvDict, latDict, lonDict, dfLockdown=prepData.Load_prvDict()
 dfAnn=prepData.LoadData_CaseDesc_Excel()
 dfScr=prepData.LoadData_CovidScreeningBKK_Excel()
 dfLoad_3=makePlot.LatLon_Province(dfLoad_2, prvDict, latDict, lonDict)
@@ -33,7 +33,7 @@ dfTrend=prepData.CalcTrendTable(dfLoad)
 fig_confirmed, fig_combine, fig_rate, fig_confirmedChange=makePlot.ProgressUpdatePlot(dfLoad)
 fig_curve_tab=makePlot.TrendPlot(dfTrend, daysOutbreak)
 fig_map=makePlot.MapPlot(dfLoad_3)
-fig_mapAnn=makePlot.MapPlot_Announcement(dfAnn, dfScr)  # map-ann
+fig_mapAnn=makePlot.MapPlot_Announcement(dfAnn, dfScr, dfLockdown)  # map-ann
 
 #########
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)

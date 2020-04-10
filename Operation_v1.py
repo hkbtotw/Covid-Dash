@@ -220,11 +220,13 @@ class PrepData(object):
 
 
         #print(len(thList), ' :: ',len(enList))
-
+        dfOut=dfPrv[dfPrv['FgLockDown']==1].copy().reset_index()
+        dfOut['Duration']=dfOut['PrvTh']+'::'+dfOut['DateStart_LD']+' to '+dfOut['DateEnd_LD']
+        #print(' lockdown :: ', dfOut)
         prvDict=dict(zip(enList,thList))
         latDict=dict(zip(enList,latList))
         lonDict=dict(zip(enList,lonList))
-        return prvDict, latDict, lonDict
+        return prvDict, latDict, lonDict, dfOut
 
     def LatLon_Announcement(self, dfIn):
         dfIn['lat'] = ""
@@ -806,15 +808,17 @@ class MakePlot(object):
         )     
         return fig2
 
-    def MapPlot_Announcement(self,dfIn, dfIn_1):
+    def MapPlot_Announcement(self,dfIn, dfIn_1, dfLd):
         latitude = 13.736717
         longitude = 100.523186 
         zoom = 4 
         hovertext_value = ['สถานที่: {}<br>'.format(i) for i in dfIn['สถานที่']]
         hovertext_value_1 = ['ด่านคัดกรอง: {}<br>'.format(j) for j in dfIn_1['Location']]
+        hovertext_value_2 = ['จังหวัด Locked Down : {}<br>'.format(j) for j in dfLd['Duration']]
 
         colorList=dfIn['Location'].values.tolist()
         colorList_1=dfIn_1['Location'].values.tolist()
+        colorList_2=dfLd['PrvTh'].values.tolist()
         #textList=dfIn['Attribute'].values.tolist()
         
         fig2 = go.Figure()
@@ -855,7 +859,24 @@ class MakePlot(object):
             hovertemplate="%{hovertext}<br>" +
                         "<extra></extra>",
             name='ด่านคัดกรอง กทม')
-            
+            )
+        fig2.add_trace(go.Scattermapbox(
+            lat=dfLd['lat'],
+            lon=dfLd['lon'],
+            mode='markers',
+            marker=go.scattermapbox.Marker(
+                color=['#FFFF00' for i in colorList_2],
+                #size=[i**(1/3) for i in dfIn['Value']],
+                sizemin=4,
+                sizemode='area',
+                #sizeref=2.*max([math.sqrt(i)
+                #           for i in dfIn['Value']])/(100.**2),
+                ),
+            #text=textList,
+            hovertext=hovertext_value_2,
+            hovertemplate="%{hovertext}<br>" +
+                        "<extra></extra>",
+            name='จังหวัด Locked down')
             )
         fig2.update_layout(
             plot_bgcolor='#ffffff',
