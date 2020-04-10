@@ -302,6 +302,33 @@ app.layout = html.Div(
         #            ######### End histogram plot
         ########### Plot end
 
+
+       ### table
+        html.Div(
+            id='dcc-tabs',
+            #style={'marginLeft': '1.5%', 'marginRight': '1.5%', 'marginBottom': '.5%'},
+            style={'width': '95%', 'display': 'inline-block', 'verticalAlign': 'top',
+                                     'box-shadow':'0px 0px 10px #ededee', 'border': '1px solid #ededee'},
+                 children=[
+                      html.H5(style={'textAlign': 'center', 'backgroundColor': '#ffffff',
+                                                 'color': '#292929', 'padding': '1rem', 'marginBottom': '0', 'marginTop': '0'},
+                                               children='Government Announcment'),
+                                  dcc.Tabs(
+                                        id="tabs-table",
+                                        value='1-1',
+                                        parent_className='custom-tabs',
+                                        className='custom-tabs-container',
+                                        children=[
+                                             makePlot.make_dcc_table(dfLockdown),
+                                             makePlot.make_dcc_table_2(dfAnn),
+                                             makePlot.make_dcc_table_3(dfScr),
+
+                                        ] ## inside children
+                                  ) ## dcc tabs
+                 ] ## children outside
+            ) ## div outside
+        ##### End table tabs
+         
         ]), # Children outermost
         ##########################
 

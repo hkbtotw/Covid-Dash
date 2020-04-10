@@ -7,6 +7,10 @@ import plotly.graph_objects as go
 import numpy as np
 from googlemaps import Client as GoogleMaps
 import math
+import dash_core_components as dcc
+import dash_table
+import dash_table.FormatTemplate as FormatTemplate
+
 
 monthDict={
     1:'Jan',
@@ -865,7 +869,7 @@ class MakePlot(object):
             lon=dfLd['lon'],
             mode='markers',
             marker=go.scattermapbox.Marker(
-                color=['#FFFF00' for i in colorList_2],
+                color=['#2D6388' for i in colorList_2],
                 #size=[i**(1/3) for i in dfIn['Value']],
                 sizemin=4,
                 sizemode='area',
@@ -909,3 +913,122 @@ class MakePlot(object):
              )
         )     
         return fig2
+
+    def make_dcc_table(self,dfData):
+        dfIn=dfData[['PrvTh','DateStart_LD','DateEnd_LD','DateAnnounce_LD']].copy()
+        dfIn.columns=['Province', 'Start', 'End', 'Announced']
+
+        dccTab= dcc.Tab(
+               id='tab-datatable',
+               label='Locked Down',
+               value='1-1',
+               className='custom-tab',
+               selected_className='custom-tab--selected',
+               children=[dash_table.DataTable(
+                    id='datatable-interact-location',
+                    # Don't show coordinates
+                    columns=[{"name": i, "id": i} for i in dfIn.columns],
+                    # But still store coordinates in the table for interactivity
+                    data=dfIn.to_dict("rows"),
+                    sort_action="native",
+                    style_as_list_view=True,
+                    style_cell={'font_family': 'Arial',
+                                  'font_size': '0.8rem',
+                                  'padding': '.1rem',
+                                  'backgroundColor': '#ffffff', },
+                    fixed_rows={'headers': True, 'data': 0},
+                    style_table={'minHeight': '800px',
+                                 'height': '800px',
+                                 'maxHeight': '800px',
+                                 'overflowX': 'auto',
+                                 },
+                    style_header={'backgroundColor': '#ffffff',
+                                    'fontWeight': 'bold'},
+                    style_cell_conditional=[{'if': {'column_id': 'Province'}, 'width': '30%'},
+                                            {'if': {'column_id': 'Start'}, 'width': '25%'},
+                                            {'if': {'column_id': 'End'}, 'width': '25%'},
+                                            {'if': {'column_id': 'Announce'}, 'width': '20%'},
+                                            {'if': {'column_id': 'Province'},  'color':'#e36209'},
+                                            {'if': {'column_id': 'Start'},  'color':'#6A97B6'},                                            
+                                            {'textAlign': 'center'}],
+                        ),
+            ]
+          )
+        return dccTab
+    
+    def make_dcc_table_2(self,dfData):
+        dfIn=dfData[['CleanedAddress','จังหวัด','วันที่']].copy()
+        dfIn.columns=['สถานที่','จังหวัด','วันที่ ผู้ติดเชื้อ อยู่ที่สถานที่นี้']
+
+        dccTab= dcc.Tab(
+               id='tab-datatable_2',
+               label='Incidents',
+               value='2-2',
+               className='custom-tab',
+               selected_className='custom-tab--selected',
+               children=[dash_table.DataTable(
+                    id='datatable-interact-location_2',
+                    # Don't show coordinates
+                    columns=[{"name": i, "id": i} for i in dfIn.columns],
+                    # But still store coordinates in the table for interactivity
+                    data=dfIn.to_dict("rows"),
+                    sort_action="native",
+                    style_as_list_view=True,
+                    style_cell={'font_family': 'Arial',
+                                  'font_size': '0.8rem',
+                                  'padding': '.1rem',
+                                  'backgroundColor': '#ffffff', },
+                    fixed_rows={'headers': True, 'data': 0},
+                    style_table={'minHeight': '800px',
+                                 'height': '800px',
+                                 'maxHeight': '800px',
+                                 'overflowX': 'inherit',
+                                 },
+                    style_header={'backgroundColor': '#ffffff',
+                                    'fontWeight': 'bold'},
+                    style_cell_conditional=[{'if': {'column_id': 'สถานที่'}, 'width': '33%'},
+                                            {'if': {'column_id': 'จังหวัด'}, 'width': '33%'},
+                                            {'if': {'column_id': 'วันที่'}, 'width': '33%'},
+                                            {'if': {'column_id': 'สถานที่'},  'color':'#e36209'},
+                                            {'if': {'column_id': 'วันที่'},  'color':'#6A97B6'},                                            
+                                            {'textAlign': 'left'}],
+                        ),
+            ]
+          )
+        return dccTab
+    
+    def make_dcc_table_3(self,dfData):
+        dfIn=dfData[['Location']].copy()
+
+        dccTab= dcc.Tab(
+               id='tab-datatable_3',
+               label='Screening Points in Bangkok',
+               value='3-3',
+               className='custom-tab',
+               selected_className='custom-tab--selected',
+               children=[dash_table.DataTable(
+                    id='datatable-interact-location_3',
+                    # Don't show coordinates
+                    columns=[{"name": i, "id": i} for i in dfIn.columns],
+                    # But still store coordinates in the table for interactivity
+                    data=dfIn.to_dict("rows"),
+                    sort_action="native",
+                    style_as_list_view=True,
+                    style_cell={'font_family': 'Arial',
+                                  'font_size': '0.8rem',
+                                  'padding': '.1rem',
+                                  'backgroundColor': '#ffffff', },
+                    fixed_rows={'headers': True, 'data': 0},
+                    style_table={'minHeight': '800px',
+                                 'height': '800px',
+                                 'maxHeight': '800px',
+                                 'overflowX': 'inherit',
+                                 },
+                    style_header={'backgroundColor': '#ffffff',
+                                    'fontWeight': 'bold'},
+                    style_cell_conditional=[{'if': {'column_id': 'Location'}, 'width': '30%'},                                    
+                                            {'textAlign': 'left'}],
+                        ),
+            ]
+          )
+        return dccTab
