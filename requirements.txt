@@ -63,7 +63,7 @@ python-dateutil==2.8.1
 python-io-wrapper==0.1
 python-slugify==4.0.0
 pytz==2019.3
-PyYAML==5.3.1
+PyYAML==5.4
 quantulum3==0.7.3
 ratelimit==2.2.1
 requests==2.23.0
